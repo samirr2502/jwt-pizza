@@ -8,10 +8,10 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | --------------------------------------------------- | ------------------ | ----------------- | ------------ |
 | View home page                                      | home.tsx           |      ------       |    -----     |
 | Register new user<br/>(t@jwt.com, pw: test)         | register.tsx       | [POST] /api/auth  |     INSERT INTO user (name, email, password) VALUES (?, ?, ?) <br /> INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)         |
-| Login new user<br/>(t@jwt.com, pw: test)            |                    |                   |              |
-| Order pizza                                         |                    |                   |              |
-| Verify pizza                                        |                    |                   |              |
-| View profile page                                   |                    |                   |              |
+| Login new user<br/>(t@jwt.com, pw: test)            |      login.tsx     | [POST] /api/auth    |      INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token        |
+| Order pizza                                         |   payment.tsx      | [POST] /api/order |     INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now()) <br />   INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?)          |
+| Verify pizza                                        |     delivery.tsx   | pizzaFactoryUrl + '/api/order/verify' |   -----   |
+| View profile page                                   | dinerDashboard.tsx | [GET] /api/order | SELECT id, franchiseId, storeId, date FROM dinerOrder WHERE dinerId=? LIMIT ${offset},${config.db.listPerPage}  <br /> SELECT id, menuId, description, price FROM orderItem WHERE orderId=?  |
 | View franchise<br/>(as diner)                       |                    |                   |              |
 | Logout                                              |                    |                   |              |
 | View About page                                     |                    |                   |              |
