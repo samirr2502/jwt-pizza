@@ -62,4 +62,5 @@ await page.route('*/**/api/auth', async (route) => {
     await page.getByRole('button', { name: 'Register' }).click();
     await expect(page.getByRole('link', { name: 'Order' })).toBeVisible();
 
+
 });
