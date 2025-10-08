@@ -81,11 +81,13 @@ async function basicInit(page: Page) {
     await route.fulfill({ json: orderRes });
   });
 
-  await page.goto('/');
+//   await page.goto('/');
 }
 
 test('admin dashboard', async ({ page }) => {
   await basicInit(page);
+      await page.goto('http://localhost:5173/');
+
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).fill('a');
@@ -102,6 +104,15 @@ test('admin dashboard', async ({ page }) => {
 });
 test('admin dashboard delelte store', async ({ page }) => {
   await basicInit(page);
+      await page.goto('http://localhost:5173/');
+
+  await page.route('*/**/api/franchise/*/store/*', async (route) => {
+  const deleteStoreRes = { message: 'store deleted' }  
+    expect(route.request().method()).toBe('DELETE');
+    await route.fulfill({ json:  deleteStoreRes});
+  });
+
+
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).fill('a');
@@ -123,9 +134,18 @@ test('admin dashboard delelte store', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Close' })).toBeVisible();
   await page.getByRole('button', { name: 'Close' }).click();
 
+     await basicInit(page);
+
+
 });
 test('admin dashboard delete franchise', async ({ page }) => {
   await basicInit(page);
+      await page.goto('http://localhost:5173/');
+ await page.route('*/**/api/franchise/*', async (route) => {
+  const deleteFranchiseRes = { message: 'franchise deleted' }  
+    expect(route.request().method()).toBe('DELETE');
+    await route.fulfill({ json:  deleteFranchiseRes});
+  });
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).fill('a');
@@ -145,9 +165,14 @@ test('admin dashboard delete franchise', async ({ page }) => {
   await expect(page.getByText('Sorry to see you go')).toBeVisible();
   await expect(page.getByText('LotaPizza')).toBeVisible();
   await page.getByRole('button', { name: 'Close' }).click();
+       await basicInit(page);
+
 });
+
 test('admin dashboard create store', async ({ page }) => {
   await basicInit(page);
+      await page.goto('http://localhost:5173/');
+
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).fill('a');
@@ -164,6 +189,8 @@ test('admin dashboard create store', async ({ page }) => {
 });
 test('admin dashboard create franchise', async ({ page }) => {
   await basicInit(page);
+      await page.goto('http://localhost:5173/');
+  
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).fill('a');
@@ -176,5 +203,19 @@ test('admin dashboard create franchise', async ({ page }) => {
   await expect(page.getByText('Mama Ricci\'s kitchen')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Franchises' })).toBeVisible();
   await expect(page.getByRole('cell', { name: 'LotaPizza' })).toBeVisible();
+  
+  await page.getByRole('button', { name: 'Add Franchise' }).click();
+  await page.getByRole('textbox', { name: 'franchise name' }).click();
+  await page.getByRole('textbox', { name: 'franchise name' }).fill('test');
+  await page.getByRole('textbox', { name: 'franchisee admin email' }).click();
+
+  await page.getByRole('textbox', { name: 'franchisee admin email' }).fill('d@jwt.com');
+  await page.route('*/**/api/franchise', async (route) => {
+    const franchiseRes = { name: 'pizzaPocket', admins: [{ email: 'f@jwt.com', id: 4, name: 'test' }], id: 1 }
+    expect(route.request().method()).toBe('POST');
+    await route.fulfill({ json: franchiseRes });
+  });
+  await page.getByRole('button', { name: 'Create' }).click();
+
 
 });
