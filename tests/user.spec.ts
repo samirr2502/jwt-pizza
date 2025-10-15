@@ -142,7 +142,7 @@ test('list users', async ({ page }) => {
                 name: 'pizza admin',
                 email: 't@jwt.com',
                 roles: [{ role: 'admin' }],
-            },{
+            }, {
                 id: 4,
                 name: 'pizza diner',
                 email: 'd@jwt.com',
@@ -173,7 +173,58 @@ test('list users', async ({ page }) => {
     await expect(page.getByRole('cell', { name: 'pizza admin' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 't@jwt.com' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'admin', exact: true })).toBeVisible();
-    
+
     await expect(page.getByRole('button', { name: 'Remove' })).toBeVisible();
+
     await page.getByRole('button', { name: 'Remove' }).click();
+    await expect(page.getByText('Deleting user')).toBeVisible();
+    await expect(page.getByText('pizza diner')).toBeVisible();
+    
+
+    await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
+    await page.getByRole('button', { name: 'Cancel' }).click();
+
+
+    await expect(page.getByText('Mama Ricci\'s kitchen')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Remove' })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Remove' }).click();
+    await expect(page.getByText('Deleting user')).toBeVisible();
+    await expect(page.getByText('pizza diner')).toBeVisible();
+
+   
+    await page.route('*/**/api/user/*', async (route) => {
+        const deleteReq = { name: "pizza admin", email: 't@jwt.com', password: 't' };
+        expect(route.request().method()).toBe('DELETE');
+        await route.fulfill({json:{}});
+    });
+
+
+    await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
+    await page.getByRole('button', { name: 'Delete' }).click();
+    await page.route(/\/api\/user(\?.*)?$/, async (route) => {
+        // const userReq = { name: "pizza admin", email: 't@jwt.com', password: 't' };
+        const usersRes = {
+            users: [{
+                id: 3,
+                name: 'pizza admin',
+                email: 't@jwt.com',
+                roles: [{ role: 'admin' }],
+            }],
+            more: false
+        };
+        expect(route.request().method()).toBe('GET');
+        // expect(route.request().postDataJSON()).toMatchObject(registerReq);
+        await route.fulfill({ json: usersRes });
+    });
+    await expect(page.getByRole('link', { name: 'Admin', exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Admin', exact: true }).click();
+
+    await expect(page.getByText('Mama Ricci\'s kitchen')).toBeVisible();
+
+
+    await expect(page.getByRole('button', { name: 'Remove' })).not.toBeVisible();
+
+
+
 });

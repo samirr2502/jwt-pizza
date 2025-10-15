@@ -25,6 +25,7 @@ import Breadcrumb from '../components/breadcrumb';
 import { pizzaService } from '../service/service';
 import { Role, User } from '../service/pizzaService';
 import 'preline/preline';
+import DeleteUser from '../views/deleteUser';
 
 declare global {
   interface Window {
@@ -76,6 +77,7 @@ export default function App() {
     { title: 'History', to: '/history', component: <History />, display: ['footer'] },
     { title: 'Admin', to: '/admin-dashboard', component: <AdminDashboard user={user} />, constraints: [isAdmin], display: ['nav'] },
     { title: 'Create franchise', to: '/:subPath?/create-franchise', component: <CreateFranchise />, display: [] },
+    { title: 'Delete user', to: '/:subPath?/delete-user', component: <DeleteUser />, display: [] },
     { title: 'Close franchise', to: '/:subPath?/close-franchise', component: <CloseFranchise />, display: [] },
     { title: 'Create store', to: '/:subPath?/create-store', component: <CreateStore />, display: [] },
     { title: 'Close store', to: '/:subPath?/close-store', component: <CloseStore />, display: [] },
