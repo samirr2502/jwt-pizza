@@ -85,10 +85,10 @@ export default function AdminDashboard(props: Props) {
                               </td>
                               <td className="text-start px-2 whitespace-nowrap text-l font-mono text-orange-600">{user.roles![0].role}</td>
                               <td className="px-6 py-1 whitespace-nowrap text-end text-sm font-medium">
-                                <button type="button" className="px-2 py-1 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-1 border-orange-400 text-orange-400  hover:border-orange-800 hover:text-orange-800" onClick={() => {}}>
+                                {!Role.isRole(user,Role.Admin) &&<button type="button" className="px-2 py-1 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-1 border-orange-400 text-orange-400  hover:border-orange-800 hover:text-orange-800" onClick={() => {}}>
                                   <TrashIcon />
                                   Remove
-                                </button>
+                                </button>}
                               </td>
                             </tr>
                   

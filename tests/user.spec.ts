@@ -142,6 +142,11 @@ test('list users', async ({ page }) => {
                 name: 'pizza admin',
                 email: 't@jwt.com',
                 roles: [{ role: 'admin' }],
+            },{
+                id: 4,
+                name: 'pizza diner',
+                email: 'd@jwt.com',
+                roles: [{ role: 'diner' }],
             }],
             more: false
         };
@@ -169,5 +174,6 @@ test('list users', async ({ page }) => {
     await expect(page.getByRole('cell', { name: 't@jwt.com' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'admin', exact: true })).toBeVisible();
     
+    await expect(page.getByRole('button', { name: 'Remove' })).toBeVisible();
     await page.getByRole('button', { name: 'Remove' }).click();
 });
