@@ -1,0 +1,8 @@
+import { valueA } from "../../module5/sub2/file3";
+import { valueB } from "../sub2/file3";
+
+export const file4_1_2 = {
+  data: valueA + valueB,
+  path: "bigProject/module4/sub1/file2.ts",
+};
+
