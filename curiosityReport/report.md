@@ -138,10 +138,28 @@ Through:
 Just like mutation testing exposes gaps in your tests, these experiments exposed how my editor “thinks” and how deeply optimized it really is.
 
 ---
-
 ## 7. How to Replicate My Experiments
 
 ### Big File
 
-```bash
+\`\`\`bash
 for ((i=0;i<5000;i++)); do echo "export const x$i = $i;" >> big.ts; done
+\`\`\`
+
+### Big Project
+
+\`\`\`bash
+./generateTree.sh
+\`\`\`
+
+### Bulk Project (Fan-Out)
+
+\`\`\`bash
+./generateFanOut.sh
+\`\`\`
+
+### Steps
+
+1. Open the generated folder in VS Code  
+2. Add syntax errors to various files  
+3. Observe when diagnostics appear depending on whether the file is open  
