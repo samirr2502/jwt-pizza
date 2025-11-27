@@ -55,9 +55,6 @@ This experiment demonstrated:
 
 - Incremental parsing re-parses **only the affected regions**, not the entire file.
 
-**Image Example:**  
-_(placeholder in GitHub: upload or embed later)_
-
 ---
 
 ### 3.2.2 Big Project
@@ -71,9 +68,6 @@ When I broke something inside a deep file:
 
 This showed that VS Code **does not analyze the entire project immediately**.
 
-**Image Example:**  
-_(placeholder)_
-
 ---
 
 ### 3.2.3 Bulk Project (Fan-Out Imports)
@@ -86,9 +80,6 @@ After deleting the exports:
 - The rest updated **only when manually opened**.
 
 This clearly shows VS Code’s **partial diagnostics** behavior.
-
-**Image Example:**  
-_(placeholder)_
 
 ---
 
